@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-application-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-application
+  template:
+    metadata:
+      labels:
+        app: todo-application
+    spec:
+      containers:
+        - name: todo-application
+          image: pavezzo/todo-application:db6ee058ab5d76b8163e58dafa7213483c5938ea
