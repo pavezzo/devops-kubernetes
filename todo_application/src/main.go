@@ -9,7 +9,7 @@ import (
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "Hello world")
+    http.ServeFile(w, r, "public/index.html")
 }
 
 
@@ -18,7 +18,7 @@ func main() {
     portstr, ok := os.LookupEnv("PORT")
     if ok {
         envport, err := strconv.Atoi(portstr)
-        if err != nil {
+        if err == nil {
             port = envport
         }
     }

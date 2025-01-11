@@ -14,4 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-application
-          image: pavezzo/todo-application:db6ee058ab5d76b8163e58dafa7213483c5938ea
+          image: pavezzo/todo-application:c54914f27173cfbd05963c755e4a6179dfa38f43
+          env:
+            - name: PORT
+              value: "3000"
