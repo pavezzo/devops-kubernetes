@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-output-dep
+  name: ping-pong-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output
+      app: ping-pong
   template:
     metadata:
       labels:
-        app: log-output
+        app: ping-pong
     spec:
       containers:
-        - name: log-output
-          image: pavezzo/log-output:e7eb6c07fa38827ef0d6e1b82f83d769adbcd751
+        - name: ping-pong
+          image: pavezzo/ping-pong:146aeab4a7684bd8c941c570811817f1efc89af6
           env:
             - name: PORT
-              value: "3001"
+              value: "3002"
