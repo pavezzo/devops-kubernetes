@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,26 +11,25 @@ import (
 )
 
 
-const file = "/usr/src/app/files/stamp"
+const stampfile = "/usr/src/app/files/stamp"
+const pongfile = "/usr/src/app/files/pong_counter"
 
 var randomString string
 
-
-type JsonResponse struct {
-    Time string
-    String string
-}
-
 func statusHandler(w http.ResponseWriter, r *http.Request) {
     _ = r
-    time, err := os.ReadFile(file)
+
+    time, err := os.ReadFile(stampfile)
     if err != nil {
         fmt.Printf("Error reading file: %s\n", err.Error())
     }
-    data := JsonResponse{ Time: string(time), String: randomString }
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusCreated)
-    json.NewEncoder(w).Encode(data)
+
+    counter, err := os.ReadFile(pongfile)
+    if err != nil {
+        fmt.Printf("Error reading file: %s\n", err.Error())
+    }
+
+    fmt.Fprintf(w, "%s: %s\nPing / Pongs: %s\n", time, randomString, counter)
 }
 
 func main() {

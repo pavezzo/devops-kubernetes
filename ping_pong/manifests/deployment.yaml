@@ -12,9 +12,16 @@ spec:
       labels:
         app: ping-pong
     spec:
+      volumes:
+        - name: shared-pong
+          persistentVolumeClaim:
+            claimName: log-pong-claim
       containers:
         - name: ping-pong
-          image: pavezzo/ping-pong:146aeab4a7684bd8c941c570811817f1efc89af6
+          image: pavezzo/ping-pong:5fc8b13c7862ae5901b18141d1206be2fd8313b0
+          volumeMounts:
+            - name: shared-pong
+              mountPath: /usr/src/app/files
           env:
             - name: PORT
               value: "3002"

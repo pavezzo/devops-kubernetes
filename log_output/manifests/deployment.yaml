@@ -14,7 +14,8 @@ spec:
     spec:
       volumes:
         - name: shared-log-output
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: log-pong-claim
       containers:
         - name: log-output-writer
           image: pavezzo/log-output-writer:d23049304b9bf6f8abd2d8049b30bb84504a1be0
@@ -22,7 +23,7 @@ spec:
             - name: shared-log-output
               mountPath: /usr/src/app/files
         - name: log-output-reader
-          image: pavezzo/log-output-reader:d23049304b9bf6f8abd2d8049b30bb84504a1be0
+          image: pavezzo/log-output-reader:7502b5d5878930eefd023c2f2d5bf1414b405932
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files
