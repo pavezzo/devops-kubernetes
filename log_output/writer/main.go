@@ -1,51 +1,27 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
-	"strconv"
 	"time"
-
-	"github.com/google/uuid"
 )
 
-var lastTime string
-var randomString string
-
-type JsonResponse struct {
-    Time string
-    String string
-}
-
-func statusHandler(w http.ResponseWriter, r *http.Request) {
-    _ = r
-    data := JsonResponse{ Time: lastTime, String: randomString }
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusCreated)
-    json.NewEncoder(w).Encode(data)
-}
+const folder = "/usr/src/app/files"
+const file = folder + "/stamp"
 
 func main() {
-    randomString = uuid.New().String()
-
-    port := 8000
-    portstr, ok := os.LookupEnv("PORT")
-    if ok {
-        envport, err := strconv.Atoi(portstr)
-        if err == nil {
-            port = envport
-        }
+    if _, err := os.Stat(file); os.IsNotExist(err) {
+        os.MkdirAll(folder, 0644)
     }
-    addr := fmt.Sprintf(":%d", port)
-    fmt.Printf("Server started in port %d\n", port)
-    http.HandleFunc("/status", statusHandler)
-    go http.ListenAndServe(addr, nil)
 
     for {
-        lastTime = time.Now().UTC().String()
-        fmt.Printf("%s: %s\n", lastTime, randomString)
+        lastTime := time.Now().UTC().String()
+        fmt.Printf("Time is: %s\n", lastTime)
+        err := os.WriteFile(file, []byte(lastTime), 0644)
+        if err != nil {
+            fmt.Printf("Error writing to file: %s\n", err.Error())
+        }
+        
         time.Sleep(5 * time.Second)
     }
 }

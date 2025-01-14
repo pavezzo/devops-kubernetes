@@ -12,9 +12,20 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-log-output
+          emptyDir: {}
       containers:
-        - name: log-output
-          image: pavezzo/log-output:e7eb6c07fa38827ef0d6e1b82f83d769adbcd751
+        - name: log-output-writer
+          image: pavezzo/log-output-writer:d23049304b9bf6f8abd2d8049b30bb84504a1be0
+          volumeMounts:
+            - name: shared-log-output
+              mountPath: /usr/src/app/files
+        - name: log-output-reader
+          image: pavezzo/log-output-reader:d23049304b9bf6f8abd2d8049b30bb84504a1be0
+          volumeMounts:
+            - name: shared-log-output
+              mountPath: /usr/src/app/files
           env:
             - name: PORT
               value: "3001"
