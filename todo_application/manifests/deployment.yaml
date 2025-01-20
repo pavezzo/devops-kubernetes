@@ -12,9 +12,16 @@ spec:
       labels:
         app: todo-application
     spec:
+      volumes:
+        - name: shared-todo-application
+          persistentVolumeClaim:
+            claimName: todo-application-claim
       containers:
         - name: todo-application
-          image: pavezzo/todo-application:c54914f27173cfbd05963c755e4a6179dfa38f43
+          image: pavezzo/todo-application:a34617dbe41e54ccfb529388767c3feebf89c1cf
+          volumeMounts:
+            - name: shared-todo-application
+              mountPath: /usr/src/app/files
           env:
             - name: PORT
               value: "3000"

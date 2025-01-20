@@ -5,8 +5,8 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o /todo-application
 
 FROM alpine:latest
-COPY --from=builder /todo-application /app/todo-application
-COPY public /app/public
+COPY --from=builder /todo-application /usr/src/app/todo-application
+COPY public /usr/src/app/public
 
-WORKDIR /app
-CMD ["/app/todo-application"]
+WORKDIR /usr/src/app
+CMD ["/usr/src/app/todo-application"]
