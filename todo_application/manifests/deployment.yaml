@@ -18,7 +18,7 @@ spec:
             claimName: todo-application-claim
       containers:
         - name: todo-application
-          image: pavezzo/todo-application:a34617dbe41e54ccfb529388767c3feebf89c1cf
+          image: pavezzo/todo-application:c775fd44195bc6eeb3722ae710c5f2bce5f67f8b
           volumeMounts:
             - name: shared-todo-application
               mountPath: /usr/src/app/files
