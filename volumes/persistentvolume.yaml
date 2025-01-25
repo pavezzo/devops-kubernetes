@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: log-pong-pv
+  namespace: exercises
 spec:
   storageClassName: log-pong-pv
   capacity:

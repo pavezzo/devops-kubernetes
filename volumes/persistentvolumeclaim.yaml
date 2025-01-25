@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: log-pong-claim
+  namespace: exercises
 spec:
   storageClassName: log-pong-pv
   accessModes:
