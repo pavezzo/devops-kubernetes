@@ -23,7 +23,7 @@ spec:
             - name: shared-log-output
               mountPath: /usr/src/app/files
         - name: log-output-reader
-          image: pavezzo/log-output-reader:7502b5d5878930eefd023c2f2d5bf1414b405932
+          image: pavezzo/log-output-reader:46e9223a75387f4a7c391520bad99c122376779a
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files

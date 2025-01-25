@@ -8,38 +8,19 @@ import (
 	"strconv"
 )
 
-const folder = "/usr/src/app/files"
-const file = folder + "/pong_counter"
-
 var counter int
 
 func pongHandler(w http.ResponseWriter, r *http.Request) {
-    writeToFile()
-    fmt.Fprintf(w, "pong %d", counter)
     counter += 1
+    fmt.Fprintf(w, "pong %d", counter)
 }
 
-func writeToFile() {
-    str := strconv.Itoa(counter)
-    err := os.WriteFile(file, []byte(str), 0644)
-    if err != nil {
-        fmt.Printf("Error writing to file: %s\n", err.Error())
-    }
+func pongStatusHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "%d", counter)
 }
-
 
 func main() {
-    if _, err := os.Stat(file); os.IsNotExist(err) {
-        os.MkdirAll(folder, 0644)
-    }
-
-    counterstr, err := os.ReadFile(file)
-    if err != nil {
-        counter = 0
-        writeToFile()
-    } else {
-        counter, _ = strconv.Atoi(string(counterstr))
-    }
+    counter = 0
 
     port := 8000
     portstr, ok := os.LookupEnv("PORT")
@@ -53,5 +34,6 @@ func main() {
     fmt.Printf("Server started in port %d\n", port)
 
     http.HandleFunc("/pingpong", pongHandler)
+    http.HandleFunc("/pingpongstatus", pongStatusHandler)
     log.Fatal(http.ListenAndServe(addr, nil))
 }

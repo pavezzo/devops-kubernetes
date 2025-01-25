@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +13,7 @@ import (
 
 
 const stampfile = "/usr/src/app/files/stamp"
-const pongfile = "/usr/src/app/files/pong_counter"
+const counterAddr = "http://ping-pong-svc:2346/pingpongstatus"
 
 var randomString string
 
@@ -24,12 +25,23 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
         fmt.Printf("Error reading file: %s\n", err.Error())
     }
 
-    counter, err := os.ReadFile(pongfile)
+    counter := -1
+    resp, err := http.Get(counterAddr)
     if err != nil {
-        fmt.Printf("Error reading file: %s\n", err.Error())
+        fmt.Printf("Error getting pong status: %s\n", err.Error())
+    } else {
+        data, err := io.ReadAll(resp.Body)
+        if err != nil {
+            fmt.Printf("Error reading pong status response body: %s\n", err.Error())
+        } else {
+            num, err := strconv.Atoi(string(data))
+            if err == nil {
+                counter = num
+            }
+        }
     }
 
-    fmt.Fprintf(w, "%s: %s\nPing / Pongs: %s\n", time, randomString, counter)
+    fmt.Fprintf(w, "%s: %s\nPing / Pongs: %d\n", time, randomString, counter)
 }
 
 func main() {
