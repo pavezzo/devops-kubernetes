@@ -17,6 +17,9 @@ spec:
         - name: shared-log-output
           persistentVolumeClaim:
             claimName: log-pong-claim
+        - name: information-file
+          configMap:
+            name: log-output-configmap
       containers:
         - name: log-output-writer
           image: pavezzo/log-output-writer:d23049304b9bf6f8abd2d8049b30bb84504a1be0
@@ -24,10 +27,18 @@ spec:
             - name: shared-log-output
               mountPath: /usr/src/app/files
         - name: log-output-reader
-          image: pavezzo/log-output-reader:46e9223a75387f4a7c391520bad99c122376779a
+          image: pavezzo/log-output-reader:6db32de1f32d3749d4d5afa6f23f9efebc09f9ee
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files
+            - name: information-file
+              mountPath: /usr/src/app/information
+              readOnly: true
           env:
             - name: PORT
               value: "3001"
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: MESSAGE

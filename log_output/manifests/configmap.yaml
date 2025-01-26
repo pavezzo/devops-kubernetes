@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-output-configmap
+data:
+  MESSAGE: "message from configmap"
+  information.txt: |
+    this text is from information.txt

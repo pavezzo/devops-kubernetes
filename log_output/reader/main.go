@@ -13,9 +13,12 @@ import (
 
 
 const stampfile = "/usr/src/app/files/stamp"
+const informationfile = "/usr/src/app/information/information.txt"
 const counterAddr = "http://ping-pong-svc:2346/pingpongstatus"
 
 var randomString string
+var envMessage string
+var informationContents string
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
     _ = r
@@ -41,7 +44,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
         }
     }
 
-    fmt.Fprintf(w, "%s: %s\nPing / Pongs: %d\n", time, randomString, counter)
+    fmt.Fprintf(w, "file content: %s\nenv variable MESSAGE=%s\n%s: %s\nPing / Pongs: %d\n", informationContents, envMessage, time, randomString, counter)
 }
 
 func main() {
@@ -55,6 +58,19 @@ func main() {
             port = envport
         }
     }
+
+    envMessage, ok = os.LookupEnv("MESSAGE")
+    if !ok {
+        fmt.Printf("Couldn't find MESSAGE from environment variables\n")
+    }
+
+    informationBytes, err := os.ReadFile(informationfile)
+    if err != nil {
+        fmt.Printf("Couldn't read information.txt: %s\n", err.Error())
+    } else {
+        informationContents = string(informationBytes)
+    }
+
 
     addr := fmt.Sprintf(":%d", port)
     fmt.Printf("Server started in port %d\n", port)
