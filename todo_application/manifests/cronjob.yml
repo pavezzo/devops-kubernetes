@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: add-wiki-todo
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: alpine/curl:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - >
+              export site=$(curl -sL -o /dev/null -w %{url_effective} https://en.wikipedia.org/wiki/Special:Random);
+              curl -X POST http://todo-backend-svc:2345/todos -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "todo=Read ${site}"
+          restartPolicy: OnFailure
