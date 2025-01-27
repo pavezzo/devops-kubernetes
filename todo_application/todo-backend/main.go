@@ -68,9 +68,10 @@ func getTodos() ([]string, error) {
 
 func addTodo(todo string) error {
     if len(todo) > 140 {
-        return errors.New("Todo is too long\n")
+        msg := fmt.Sprintf("\"%s\" is too long", todo)
+        return errors.New(msg)
     } else if len(todo) == 0 {
-        return errors.New("Todo is empty\n")
+        return errors.New("todo is empty")
     }
 
     dbconn, err := getConnection()
@@ -82,6 +83,7 @@ func addTodo(todo string) error {
     if err != nil {
         return err
     }
+    fmt.Printf("Added todo with following contents: \"%s\"\n", todo)
 
     return nil
 }
@@ -112,7 +114,7 @@ func todoHandler(w http.ResponseWriter, r *http.Request) {
         err = addTodo(todo)
         if err != nil {
             fmt.Fprintf(os.Stderr, "Error adding todo: %s\n", err.Error())
-            http.Error(w, err.Error(), http.StatusBadRequest)
+            http.Error(w, "Bad request", http.StatusBadRequest)
             return
         }
 
