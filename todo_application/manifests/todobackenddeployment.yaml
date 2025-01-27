@@ -15,7 +15,21 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: pavezzo/todo-backend:0882909c461f023f8aecc5d4251d1e56a5af1353
+          image: pavezzo/todo-backend:7663e042d2164efbd099e8675eea8308d3717c16
           env:
             - name: PORT
               value: "3000"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todo-backend-db-password
+                  key: POSTGRES_PASSWORD
+            - name: DB_HOST
+              value: "postgres-svc"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_NAME
+              value: "postgres"
+
