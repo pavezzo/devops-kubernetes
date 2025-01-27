@@ -19,10 +19,24 @@ spec:
       #       claimName: log-pong-claim
       containers:
         - name: ping-pong
-          image: pavezzo/ping-pong:ef0700e2a6b330e88d1e7357e489f3fc0ce4cffa
+          image: pavezzo/ping-pong:74407fcdfc3315868e4e808bc3423919f9f57024
           # volumeMounts:
           #   - name: shared-pong
           #     mountPath: /usr/src/app/files
           env:
             - name: PORT
               value: "3002"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ping-pong-db-password
+                  key: POSTGRES_PASSWORD
+            - name: DB_HOST
+              value: "postgres-svc"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_NAME
+              value: "postgres"
+
