@@ -19,7 +19,7 @@ spec:
       #       claimName: log-pong-claim
       containers:
         - name: ping-pong
-          image: pavezzo/ping-pong:74407fcdfc3315868e4e808bc3423919f9f57024
+          image: pavezzo/ping-pong:5b6be56c67ccccd8f61e60d38ff377ac0659a8ad
           # volumeMounts:
           #   - name: shared-pong
           #     mountPath: /usr/src/app/files

@@ -16,7 +16,7 @@ spec:
       volumes:
         - name: shared-log-output
           persistentVolumeClaim:
-            claimName: log-pong-claim
+            claimName: log-output-claim
         - name: information-file
           configMap:
             name: log-output-configmap
@@ -27,7 +27,7 @@ spec:
             - name: shared-log-output
               mountPath: /usr/src/app/files
         - name: log-output-reader
-          image: pavezzo/log-output-reader:6db32de1f32d3749d4d5afa6f23f9efebc09f9ee
+          image: pavezzo/log-output-reader:9a07d88fa89acfc8ca519a003c7e78cedd3d8da0
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files
@@ -42,3 +42,15 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: MESSAGE
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-output-claim
+  namespace: exercises
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

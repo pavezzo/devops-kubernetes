@@ -60,6 +60,13 @@ func pongStatusHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "%d", num)
 }
 
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+    if r.URL.Path != "/" {
+        return
+    }
+    fmt.Fprintf(w, "Ping pong")
+}
+
 func main() {
     port := 8000
     portstr, ok := os.LookupEnv("PORT")
@@ -97,6 +104,7 @@ func main() {
     addr := fmt.Sprintf(":%d", port)
     fmt.Printf("Server started in port %d\n", port)
 
+    http.HandleFunc("/", indexHandler)
     http.HandleFunc("/pingpong", pongHandler)
     http.HandleFunc("/pingpongstatus", pongStatusHandler)
     log.Fatal(http.ListenAndServe(addr, nil))
