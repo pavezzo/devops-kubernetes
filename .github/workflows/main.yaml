@@ -46,6 +46,7 @@ jobs:
       - name: Deploy
         run: |-
           cd todo_application
+          kubectl config set-context --current --namespace=project
           kustomize edit set image PROJECT/IMAGE-APPLICATION=gcr.io/$PROJECT_ID/$IMAGE-application:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/IMAGE-BACKEND=gcr.io/$PROJECT_ID/$IMAGE-backend:$BRANCH-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
