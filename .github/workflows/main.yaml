@@ -10,6 +10,7 @@ env:
   IMAGE: todo
   SERVICE: dwk-environments
   BRANCH: ${{ github.ref_name }}
+  SOPS_AGE_KEY: ${{ secrets.AGE_KEY }}
 
 jobs:
   build-publish-deploy:
@@ -43,10 +44,21 @@ jobs:
           docker push "gcr.io/$PROJECT_ID/$IMAGE-backend:$BRANCH-$GITHUB_SHA"
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
+      - name: Setup SOPS
+        uses: nhedger/setup-sops@v2
+      - name: Decrypt secret
+        run: sops --decrypt ./todo_application/manifests/secret.enc.yaml > ./todo_application/manifests/secret.yaml
       - name: Deploy
         run: |-
           cd todo_application
-          kubectl config set-context --current --namespace=project
+          namespace=${GITHUB_REF#refs/heads/}
+          if [[ "$namespace" == "main" ]]; then
+            namespace="default"
+          fi
+          kubectl create namespace $namespace || true
+          kubectl config set-context --current --namespace=$namespace
+          kubectl apply -f ./manifests/secret.yaml
+          kustomize edit set namespace $namespace
           kustomize edit set image PROJECT/IMAGE-APPLICATION=gcr.io/$PROJECT_ID/$IMAGE-application:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/IMAGE-BACKEND=gcr.io/$PROJECT_ID/$IMAGE-backend:$BRANCH-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
