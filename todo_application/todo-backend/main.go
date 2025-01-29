@@ -124,6 +124,15 @@ func todoHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+    if r.URL.Path != "/" {
+        return
+    }
+
+    fmt.Fprintf(w, "todo backend")
+}
+
+
 func main() {
     port := 8000
     portstr, ok := os.LookupEnv("PORT")
@@ -156,6 +165,7 @@ func main() {
     addr := fmt.Sprintf(":%d", port)
     fmt.Printf("Server started in port %d\n", port)
 
+    http.HandleFunc("/", indexHandler)
     http.HandleFunc("/todos", todoHandler)
     log.Fatal(http.ListenAndServe(addr, nil))
 }

@@ -19,10 +19,24 @@ spec:
             claimName: todo-application-claim
       containers:
         - name: todo-application
-          image: pavezzo/todo-application:391fc1782300ad2c8303bceb2bea4357e7c09421
+          # image: pavezzo/todo-application:391fc1782300ad2c8303bceb2bea4357e7c09421
+          image: PROJECT/IMAGE-APPLICATION
           volumeMounts:
             - name: shared-todo-application
               mountPath: /usr/src/app/files
           env:
             - name: PORT
               value: "3000"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: todo-application-claim
+  namespace: project
+spec:
+  storageClassName: todo-application-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

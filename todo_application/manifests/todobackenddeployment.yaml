@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: pavezzo/todo-backend:53b4f69bc244e2b0fe947196aa09e03a5d1fd66a
+          # image: pavezzo/todo-backend:53b4f69bc244e2b0fe947196aa09e03a5d1fd66a
+          image: PROJECT/IMAGE-BACKEND
           env:
             - name: PORT
               value: "3000"

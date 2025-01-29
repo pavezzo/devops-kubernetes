@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: add-wiki-todo
+  namespace: project
 spec:
   schedule: "0 * * * *"
   jobTemplate:
