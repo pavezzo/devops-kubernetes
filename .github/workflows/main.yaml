@@ -50,6 +50,6 @@ jobs:
           kustomize edit set image PROJECT/IMAGE-APPLICATION=gcr.io/$PROJECT_ID/$IMAGE-application:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/IMAGE-BACKEND=gcr.io/$PROJECT_ID/$IMAGE-backend:$BRANCH-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment todo-backend-dep
           kubectl rollout status deployment todo-application-dep
+          kubectl rollout status deployment todo-backend-dep
           kubectl get services -o wide
