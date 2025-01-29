@@ -36,7 +36,7 @@ metadata:
 spec:
   storageClassName: todo-application-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
