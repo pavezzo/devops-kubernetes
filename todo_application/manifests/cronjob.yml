@@ -18,5 +18,5 @@ spec:
             - -c
             - >
               export site=$(curl -sL -o /dev/null -w %{url_effective} https://en.wikipedia.org/wiki/Special:Random);
-              curl -X POST http://todo-backend-svc:2345/todos -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "todo=Read ${site}"
+              curl -X POST http://todo-backend-svc/todos -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "todo=Read ${site}"
           restartPolicy: OnFailure
