@@ -34,7 +34,6 @@ metadata:
   name: todo-application-claim
   namespace: project
 spec:
-  storageClassName: todo-application-pv
   accessModes:
     - ReadWriteMany
   resources:
