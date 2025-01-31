@@ -23,11 +23,19 @@ spec:
       containers:
         - name: log-output-writer
           image: pavezzo/log-output-writer:d23049304b9bf6f8abd2d8049b30bb84504a1be0
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files
         - name: log-output-reader
           image: pavezzo/log-output-reader:9a07d88fa89acfc8ca519a003c7e78cedd3d8da0
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
           volumeMounts:
             - name: shared-log-output
               mountPath: /usr/src/app/files
