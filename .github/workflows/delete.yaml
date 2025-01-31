@@ -28,4 +28,4 @@ jobs:
           location: '${{ env.GKE_ZONE }}'
       - name: 'Delete namespace'
         run: |-
-          kubectl delete namespace ${{ github.ref_name }}
+          kubectl delete namespace ${{ github.event.ref }}
