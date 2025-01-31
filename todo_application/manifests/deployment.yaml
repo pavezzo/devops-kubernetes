@@ -23,6 +23,10 @@ spec:
         - name: todo-application
           # image: pavezzo/todo-application:391fc1782300ad2c8303bceb2bea4357e7c09421
           image: PROJECT/IMAGE-APPLICATION
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
           volumeMounts:
             - name: shared-todo-application
               mountPath: /usr/src/app/files
